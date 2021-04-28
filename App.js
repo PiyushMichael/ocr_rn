@@ -29,7 +29,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 let cameraRef;
 const {width} = Dimensions.get('window');
-const offset = (width * 1.5) / 16;
+// const offset = width / 20;
 
 const App: () => Node = () => {
   const [blocks, seteBlocks] = useState([]);
@@ -81,6 +81,7 @@ const App: () => Node = () => {
       />
       <View style={styles.buttonRow}>
         <TouchableOpacity onPress={() => setModal(true)} style={styles.capture}>
+          <Icon name="eye" size={20} color={Colors.dark} />
           <Text style={styles.scanText}>VIEW</Text>
         </TouchableOpacity>
       </View>
@@ -89,14 +90,22 @@ const App: () => Node = () => {
             key={index.toString()}
             style={{
               position: 'absolute',
-              left: block.bounds.origin.x + offset,
+              left: block.bounds.origin.x,// - offset,
               top: block.bounds.origin.y,
-              width: block.bounds.size.width,
-              height: block.bounds.size.height,
-              borderWidth: 2,
-              borderColor:  'red',
+              width: block.bounds.size.width * 1.2,
+              height: block.bounds.size.height * 0.9,
+              borderRadius: 2,
+              backgroundColor: 'rgba(255,255,255,0.6)'
             }}
-          />
+          >
+            <Text
+              style={{
+                flexWrap: 'wrap',
+                fontSize: block.bounds.size.height / block.components.length / 2,
+            }}>
+              {block.value}
+            </Text>
+          </View>
       ))}
       <Modal visible={modal} onRequestClose={() => setModal(false)} transparent>
         <View style={styles.backdrop}>
@@ -140,7 +149,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   capture: {
-    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 5,
     padding: 15,
@@ -158,6 +168,7 @@ const styles = StyleSheet.create({
   scanText: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginLeft: 8,
   },
   backdrop: {
     flex: 1,
